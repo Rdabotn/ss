@@ -15,11 +15,11 @@ SESSION_STRING = getenv("SESSION_STRING", "AgB86r0AbmBFb_yYuNajuG8X1_UDH0L5ckcuA
 OWNER_USERNAME = getenv("OWNER_USERNAME", "rda")
 ALIVE_NAME = getenv("ALIVE_NAME", "Music")
 BOT_USERNAME = getenv("BOT_USERNAME", "MusicBot")
-UPSTREAM_REPO = getenv("UPSTREAM_REPO", "https://github.com/X02lx/RrRRR")
+UPSTREAM_REPO = getenv("UPSTREAM_REPO", "https://github.com/X02lx/")
 UPSTREAM_BRANCH = getenv("UPSTREAM_BRANCH", "main")
 DURATION_LIMIT = int(getenv("DURATION_LIMIT", "60"))
-GROUP_SUPPORT = getenv("GROUP_SUPPORT", "rr8r9")
-UPDATES_CHANNEL = getenv("UPDATES_CHANNEL", "xl444")
+GROUP_SUPPORT = getenv("GROUP_SUPPORT", "Hirosi_hr")
+UPDATES_CHANNEL = getenv("UPDATES_CHANNEL", "Hirosi_hr")
 
 # database, decorators, handlers mandatory vars
 MONGODB_URL = getenv("MONGODB_URL", "mongodb+srv://veez:mega@cluster0.heqnd.mongodb.net/veez?retryWrites=true&w=majority")

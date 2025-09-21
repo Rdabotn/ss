@@ -50,13 +50,15 @@ if not all([API_ID, API_HASH, BOT_TOKEN]):
 # BOT CONFIGURATION
 # =======================
 OWNER_USERNAME = os.getenv("OWNER_USERNAME", "rda")
-ALIVE_NAME = os.getenv("ALIVE_NAME", "Music Bot")
+OWNER_NAME = "rda"  # Your name
+ALIVE_NAME = os.getenv("ALIVE_NAME", "𝗋𝖽𝖺 Music Bot")
 BOT_USERNAME = os.getenv("BOT_USERNAME", "MusicBot")
-BOT_NAME = os.getenv("BOT_NAME", "Music Bot")
+BOT_NAME = os.getenv("BOT_NAME", "BrQ Music Bot")
 
 # Repository settings
-UPSTREAM_REPO = os.getenv("UPSTREAM_REPO", "https://github.com/X02lx/")
+UPSTREAM_REPO = os.getenv("UPSTREAM_REPO", "https://github.com/Rdabotn/ss.git")
 UPSTREAM_BRANCH = os.getenv("UPSTREAM_BRANCH", "main")
+SOURCE_NAME = "BrQ"  # Your source name
 
 # Music settings
 DURATION_LIMIT = getenv_int("DURATION_LIMIT", 60)  # minutes
@@ -68,7 +70,8 @@ PLAYLIST_FETCH_LIMIT = getenv_int("PLAYLIST_FETCH_LIMIT", 25)
 # =======================
 GROUP_SUPPORT = os.getenv("GROUP_SUPPORT", "Hirosi_hr")
 UPDATES_CHANNEL = os.getenv("UPDATES_CHANNEL", "Hirosi_hr")
-LOG_GROUP_ID = getenv_int("LOG_GROUP_ID", 0)
+SOURCE_CHANNEL = "https://t.me/Hirosi_hr"  # Your channel
+LOG_GROUP_ID = getenv_int("LOG_GROUP_ID", 0)  # Set to 0 to disable logging
 
 # =======================
 # DATABASE CONFIGURATION
@@ -79,7 +82,7 @@ MONGODB_URL = os.getenv("MONGODB_URL", "mongodb+srv://veez:mega@cluster0.heqnd.m
 # PERMISSIONS
 # =======================
 COMMAND_PREFIXES = getenv_list("COMMAND_PREFIXES", "شغل تشغيل ش / ! . #")
-OWNER_ID = getenv_int_list("OWNER_ID", "6878196064")
+OWNER_ID = [6878196064]  # Your ID as main owner
 SUDO_USERS = getenv_int_list("SUDO_USERS", "6878196064")
 
 # Combine owner and sudo users
@@ -113,8 +116,8 @@ GENIUS_API_TOKEN = os.getenv("GENIUS_API_TOKEN", "")
 MAX_CONCURRENT_TRANSMISSIONS = getenv_int("MAX_CONCURRENT_TRANSMISSIONS", 3)
 CLEANMODE_DELETE_MINS = getenv_int("CLEANMODE_DELETE_MINS", 5)
 
-# Auto-join channels (improved)
-AUTO_JOIN_CHANNELS = getenv_list("AUTO_JOIN_CHANNELS", "RR3R2 xl444")
+# Auto-join channels (FIXED - empty to avoid errors)
+AUTO_JOIN_CHANNELS = []  # Disabled to prevent channel access errors
 
 # =======================
 # VALIDATION
@@ -146,9 +149,9 @@ validate_config()
 # =======================
 __all__ = [
     'API_ID', 'API_HASH', 'BOT_TOKEN', 'SESSION_NAME', 'SESSION_STRING',
-    'OWNER_USERNAME', 'ALIVE_NAME', 'BOT_USERNAME', 'BOT_NAME',
-    'DURATION_LIMIT', 'GROUP_SUPPORT', 'UPDATES_CHANNEL',
-    'MONGODB_URL', 'COMMAND_PREFIXES', 'OWNER_ID', 'SUDO_USERS',
+    'OWNER_USERNAME', 'OWNER_NAME', 'ALIVE_NAME', 'BOT_USERNAME', 'BOT_NAME',
+    'DURATION_LIMIT', 'GROUP_SUPPORT', 'UPDATES_CHANNEL', 'SOURCE_CHANNEL',
+    'MONGODB_URL', 'COMMAND_PREFIXES', 'OWNER_ID', 'SUDO_USERS', 'SOURCE_NAME',
     'IMG_1', 'IMG_2', 'IMG_3', 'IMG_4', 'IMG_5', 'ALIVE_IMG', 'IMAGES',
     'AUTO_LEAVING_ASSISTANT', 'AUTO_JOIN_CHANNELS', 'admins'
 ]

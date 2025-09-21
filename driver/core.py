@@ -73,19 +73,25 @@ except Exception as e:
     sys.exit(1)
 
 # =======================
-# PYTGCALLS CLIENT
+# PYTGCALLS CLIENT (FIXED)
 # =======================
 try:
     calls = PyTgCalls(
         user,
-        cache_duration=120,  # Increased cache duration
-        log_mode=2  # Better logging
+        cache_duration=120  # Removed log_mode parameter
     )
     music_bot.calls = calls
     print("✅ PyTgCalls client initialized successfully")
 except Exception as e:
     print(f"❌ Failed to initialize PyTgCalls client: {e}")
-    sys.exit(1)
+    # Try without cache_duration as fallback
+    try:
+        calls = PyTgCalls(user)
+        music_bot.calls = calls
+        print("✅ PyTgCalls client initialized successfully (fallback mode)")
+    except Exception as fallback_error:
+        print(f"❌ Failed to initialize PyTgCalls client (fallback): {fallback_error}")
+        sys.exit(1)
 
 # =======================
 # HELPER FUNCTIONS
@@ -146,10 +152,21 @@ async def start_clients():
             await music_bot.user.start()
             print("✅ Userbot client started")
         
-        # Start calls client
+        # Start calls client with error handling
         if music_bot.calls:
-            await music_bot.calls.start()
-            print("✅ PyTgCalls client started")
+            try:
+                await music_bot.calls.start()
+                print("✅ PyTgCalls client started")
+            except Exception as e:
+                print(f"⚠️  PyTgCalls start error: {e}")
+                # Try to reinitialize calls client
+                try:
+                    music_bot.calls = PyTgCalls(music_bot.user)
+                    await music_bot.calls.start()
+                    print("✅ PyTgCalls client reinitialized and started")
+                except Exception as reinit_error:
+                    print(f"❌ Failed to reinitialize PyTgCalls: {reinit_error}")
+                    return False
         
         # Get client info
         bot_info = await get_bot_info()
@@ -167,22 +184,33 @@ async def start_clients():
         
     except Exception as e:
         print(f"❌ Failed to start clients: {e}")
+        import traceback
+        print(f"Full error: {traceback.format_exc()}")
         return False
 
 async def stop_clients():
     """Stop all clients safely"""
     try:
         if music_bot.calls:
-            await music_bot.calls.stop()
-            print("✅ PyTgCalls client stopped")
+            try:
+                await music_bot.calls.stop()
+                print("✅ PyTgCalls client stopped")
+            except Exception as e:
+                print(f"⚠️  Error stopping PyTgCalls: {e}")
         
         if music_bot.user and music_bot.user.is_connected:
-            await music_bot.user.stop()
-            print("✅ Userbot client stopped")
+            try:
+                await music_bot.user.stop()
+                print("✅ Userbot client stopped")
+            except Exception as e:
+                print(f"⚠️  Error stopping userbot: {e}")
         
         if music_bot.bot and music_bot.bot.is_connected:
-            await music_bot.bot.stop()
-            print("✅ Bot client stopped")
+            try:
+                await music_bot.bot.stop()
+                print("✅ Bot client stopped")
+            except Exception as e:
+                print(f"⚠️  Error stopping bot: {e}")
             
     except Exception as e:
         print(f"❌ Error stopping clients: {e}")
@@ -203,7 +231,7 @@ async def health_check():
     try:
         bot_ok = music_bot.bot and music_bot.bot.is_connected
         user_ok = music_bot.user and music_bot.user.is_connected
-        calls_ok = music_bot.calls and music_bot.calls.is_connected
+        calls_ok = music_bot.calls and hasattr(music_bot.calls, 'is_connected') and music_bot.calls.is_connected
         
         return {
             "bot": bot_ok,
@@ -223,7 +251,10 @@ async def restart_client(client_name: str):
         elif client_name == "user" and music_bot.user:
             await music_bot.user.restart()
         elif client_name == "calls" and music_bot.calls:
-            await music_bot.calls.restart()
+            # PyTgCalls doesn't have restart method, stop and start instead
+            await music_bot.calls.stop()
+            await asyncio.sleep(1)
+            await music_bot.calls.start()
         
         print(f"✅ {client_name} client restarted")
         return True
